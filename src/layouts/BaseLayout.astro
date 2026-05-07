@@ -16,7 +16,7 @@ const desc = description ?? 'ノートと文章。';
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#0a1228" />
+    <meta name="theme-color" content="#faf6ec" media="(prefers-color-scheme: light)" />
     <title>{fullTitle}</title>
     <meta name="description" content={desc} />
     <meta property="og:title" content={fullTitle} />
@@ -24,14 +24,29 @@ const desc = description ?? 'ノートと文章。';
     <meta property="og:type" content={title ? 'article' : 'website'} />
     <link rel="alternate" type="application/rss+xml" title={siteTitle} href="/rss.xml" />
     <link rel="sitemap" href="/sitemap-index.xml" />
+    <script is:inline>
+      (function () {
+        try {
+          var t = localStorage.getItem('theme');
+          if (t === 'rpg') document.documentElement.dataset.theme = 'rpg';
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body>
     <header class="site-header">
       <a class="brand" href="/">{siteTitle}</a>
-      <nav>
-        <a href="/posts/">posts</a>
-        <a href="/about/">about</a>
-      </nav>
+      <div class="header-right">
+        <nav>
+          <a href="/posts/">posts</a>
+          <a href="/about/">about</a>
+        </nav>
+        <div class="theme-switch" role="group" aria-label="theme">
+          <button type="button" data-set-theme="reading" aria-label="通常表示">通常</button>
+          <span class="sep" aria-hidden="true">/</span>
+          <button type="button" data-set-theme="rpg" aria-label="RPG表示">RPG</button>
+        </div>
+      </div>
     </header>
     <main>
       <slot />
@@ -40,5 +55,27 @@ const desc = description ?? 'ノートと文章。';
       <span>© {new Date().getFullYear()}</span>
       <a href="/rss.xml">rss</a>
     </footer>
+    <script>
+      const root = document.documentElement;
+      const buttons = document.querySelectorAll('[data-set-theme]');
+      const sync = () => {
+        const current = root.dataset.theme === 'rpg' ? 'rpg' : 'reading';
+        buttons.forEach((b) => {
+          const el = b as HTMLButtonElement;
+          el.classList.toggle('active', el.dataset.setTheme === current);
+        });
+      };
+      buttons.forEach((b) => {
+        const el = b as HTMLButtonElement;
+        el.addEventListener('click', () => {
+          const t = el.dataset.setTheme === 'rpg' ? 'rpg' : 'reading';
+          if (t === 'rpg') root.dataset.theme = 'rpg';
+          else delete root.dataset.theme;
+          try { localStorage.setItem('theme', t); } catch (e) {}
+          sync();
+        });
+      });
+      sync();
+    </script>
   </body>
 </html>

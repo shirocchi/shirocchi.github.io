@@ -1,29 +1,78 @@
-@import url('https://fonts.googleapis.com/css2?family=DotGothic16&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;700&family=DotGothic16&display=swap');
 
+/* ============================================================
+   Default theme: 和紙 × 墨 × 明朝 (readable)
+   ============================================================ */
 :root {
-  /* PC-98 / RPG dialog palette — deep navy with green & cyan */
+  --bg: #faf6ec;
+  --bg-elev: #f3ecdb;
+  --text: #1c1813;
+  --text-muted: #6b6056;
+  --text-faint: #b0a89c;
+  --accent: #1c1813;
+  --accent-2: #6b6056;
+  --accent-dim: #b0a89c;
+  --rule: #e2dac7;
+  --rule-bright: #b0a89c;
+
+  --font-body: 'Noto Serif JP', 'Hiragino Mincho ProN', 'YuMincho', '游明朝', serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', ui-monospace, Menlo, monospace;
+
+  --measure: 36rem;
+  --leading: 1.95;
+  --t-base: 17px;
+  --t-xs: 0.78rem;
+  --t-sm: 0.86rem;
+  --t-lg: 1.18rem;
+  --t-xl: 1.42rem;
+
+  /* decoration glyphs (unset for default) */
+  --dec-brand: '';
+  --dec-h2: '';
+  --dec-section: '';
+  --dec-year-pre: '';
+  --dec-year-suf: '';
+  --dec-hr: '⁂';
+  --dec-cursor: '';
+}
+
+/* ============================================================
+   RPG theme: PC-98 風 (deep navy × green × cyan × dot)
+   ============================================================ */
+[data-theme="rpg"] {
   --bg: #0a1228;
   --bg-elev: #16243f;
   --text: #d4ecff;
   --text-muted: #6e8db0;
   --text-faint: #3f5878;
-  --accent: #5dffac;       /* primary: RPG green */
-  --accent-2: #4ad8e8;     /* secondary: cyan */
+  --accent: #5dffac;
+  --accent-2: #4ad8e8;
   --accent-dim: #2a8a6a;
   --rule: #2a4060;
   --rule-bright: #4ad8e8;
 
+  --font-body: 'DotGothic16', 'MS Gothic', monospace;
+  --font-mono: 'DotGothic16', monospace;
+
   --measure: 38rem;
   --leading: 1.85;
   --t-base: 18px;
-  --t-xs: 0.78rem;
-  --t-sm: 0.86rem;
-  --t-lg: 1.18rem;
-  --t-xl: 1.4rem;
+
+  --dec-brand: '■ ';
+  --dec-h2: '◆ ';
+  --dec-section: '> ';
+  --dec-year-pre: '── ';
+  --dec-year-suf: ' ──';
+  --dec-hr: '▼  ▽  ▼';
+  --dec-cursor: '▶';
 }
 
+/* ============================================================
+   Common styles
+   ============================================================ */
 *, *::before, *::after { box-sizing: border-box; }
-*::selection { background: var(--accent); color: var(--bg); }
+*::selection { background: var(--text); color: var(--bg); }
+[data-theme="rpg"] *::selection { background: var(--accent); color: var(--bg); }
 
 html {
   font-size: var(--t-base);
@@ -33,55 +82,77 @@ html {
 
 body {
   margin: 0;
-  font-family: 'DotGothic16', 'MS Gothic', monospace;
+  font-family: var(--font-body);
   font-weight: 400;
   color: var(--text);
   background: var(--bg);
   line-height: var(--leading);
-  -webkit-font-smoothing: none;
+  -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: 'palt' 1;
+  min-height: 100vh;
+  transition: background 120ms ease, color 120ms ease;
+}
+[data-theme="rpg"] body {
+  -webkit-font-smoothing: none;
   font-smooth: never;
   text-rendering: geometricPrecision;
-  min-height: 100vh;
+  font-feature-settings: normal;
 }
 
 a {
   color: inherit;
   text-decoration: underline;
-  text-underline-offset: 0.25em;
-  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+  text-decoration-thickness: 0.5px;
   text-decoration-color: var(--text-faint);
-  transition: color 100ms steps(1), text-decoration-color 100ms steps(1);
+  transition: color 120ms ease, text-decoration-color 120ms ease, text-decoration-thickness 120ms ease;
 }
 a:hover {
+  color: var(--text);
+  text-decoration-color: var(--text);
+  text-decoration-thickness: 1px;
+}
+[data-theme="rpg"] a {
+  text-decoration-thickness: 1px;
+  transition: color 100ms steps(1), text-decoration-color 100ms steps(1);
+}
+[data-theme="rpg"] a:hover {
   color: var(--accent);
   text-decoration-color: var(--accent);
   text-decoration-thickness: 2px;
 }
 
 h1, h2, h3 {
-  font-weight: 400;
-  line-height: 1.5;
-  letter-spacing: 0;
+  font-weight: 700;
+  line-height: 1.55;
+  letter-spacing: 0.015em;
   color: var(--text);
 }
+[data-theme="rpg"] h1,
+[data-theme="rpg"] h2,
+[data-theme="rpg"] h3 { font-weight: 400; letter-spacing: 0; }
+
 h1 { font-size: var(--t-xl); margin: 0 0 1.25rem; }
-h2 {
-  font-size: var(--t-lg);
-  margin: 3rem 0 1rem;
-  color: var(--accent-2);
-}
-h2::before { content: '◆ '; color: var(--accent); }
-h3 { font-size: 1.05rem; margin: 2.25rem 0 0.5rem; color: var(--text); }
+h2 { font-size: var(--t-lg); margin: 3rem 0 1rem; }
+[data-theme="rpg"] h2 { color: var(--accent-2); }
+h2::before { content: var(--dec-h2); color: var(--accent); }
+h3 { font-size: 1.05rem; margin: 2.25rem 0 0.5rem; font-weight: 500; }
+[data-theme="rpg"] h3 { font-weight: 400; }
 
 p { margin: 0 0 1.5em; }
 
 blockquote {
   margin: 2em 0;
+  padding: 0 0 0 1.5em;
+  border-left: 1px solid var(--rule);
+  color: var(--text-muted);
+}
+[data-theme="rpg"] blockquote {
   padding: 0.5em 1.25em;
   border-left: 2px solid var(--accent);
   background: var(--bg-elev);
-  color: var(--text-muted);
 }
 
 img {
@@ -89,6 +160,8 @@ img {
   height: auto;
   display: block;
   margin: 2em auto;
+}
+[data-theme="rpg"] img {
   image-rendering: pixelated;
   image-rendering: crisp-edges;
 }
@@ -96,64 +169,79 @@ img {
 hr {
   border: 0;
   text-align: center;
-  margin: 3rem 0;
+  margin: 3.5rem 0;
   height: 1em;
-  color: var(--text-faint);
 }
 hr::before {
-  content: '▼  ▽  ▼';
-  letter-spacing: 0.2em;
+  content: var(--dec-hr);
+  color: var(--text-faint);
+  font-size: 0.95em;
+  letter-spacing: 0.4em;
 }
 
 code {
-  font-family: 'DotGothic16', monospace;
-  font-size: 0.9em;
+  font-family: var(--font-mono);
+  font-size: 0.85em;
   background: var(--bg-elev);
-  color: var(--accent-2);
   padding: 0.1em 0.4em;
+  border-radius: 2px;
+}
+[data-theme="rpg"] code {
+  color: var(--accent-2);
   border: 1px solid var(--rule);
+  border-radius: 0;
+  font-size: 0.9em;
 }
 pre {
   background: var(--bg-elev);
-  color: var(--text);
-  padding: 1em 1.25em;
+  padding: 1.1em 1.4em;
   overflow-x: auto;
+  border-radius: 2px;
   line-height: 1.65;
-  font-size: 0.9em;
+  font-size: 0.85em;
   margin: 1.75em 0;
+  border: 1px solid var(--rule);
+}
+[data-theme="rpg"] pre {
   border: 1px solid var(--rule-bright);
+  border-radius: 0;
+  font-size: 0.9em;
+  color: var(--text);
 }
-pre code {
-  background: none;
-  padding: 0;
-  border: 0;
-  color: inherit;
-  font-size: inherit;
-}
+pre code { background: none; padding: 0; border: 0; font-size: inherit; }
 
 ul, ol { padding-left: 1.4em; margin: 0 0 1.5em; }
 li { margin: 0.3em 0; }
 
-/* ---- Site chrome ---- */
+/* ============================================================
+   Site chrome
+   ============================================================ */
 .site-header {
   max-width: var(--measure);
   margin: 0 auto;
-  padding: 2.5rem 1.5rem 1.5rem;
+  padding: 3rem 1.5rem 0;
   display: flex;
   align-items: baseline;
   justify-content: space-between;
+  gap: 1.5rem;
   font-size: var(--t-sm);
-  color: var(--text);
+  flex-wrap: wrap;
 }
+[data-theme="rpg"] .site-header { padding: 2.5rem 1.5rem 1.5rem; }
+
 .site-header .brand {
   text-decoration: none;
-  font-weight: 400;
+  font-weight: 700;
   letter-spacing: 0.06em;
   color: var(--text);
 }
-.site-header .brand::before {
-  content: '■ ';
-  color: var(--accent-2);
+[data-theme="rpg"] .site-header .brand { font-weight: 400; }
+.site-header .brand::before { content: var(--dec-brand); color: var(--accent-2); }
+
+.header-right {
+  display: flex;
+  align-items: baseline;
+  gap: 1.75rem;
 }
 .site-header nav { display: flex; gap: 1.5rem; }
 .site-header nav a {
@@ -161,39 +249,66 @@ li { margin: 0.3em 0; }
   color: var(--text-muted);
   letter-spacing: 0.05em;
 }
-.site-header nav a:hover { color: var(--accent); text-decoration: underline; }
+.site-header nav a:hover { color: var(--text); text-decoration: none; }
+[data-theme="rpg"] .site-header nav a:hover { color: var(--accent); text-decoration: underline; }
+
+.theme-switch {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  font-size: var(--t-xs);
+  font-family: var(--font-mono);
+}
+.theme-switch button {
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  color: var(--text-faint);
+  cursor: pointer;
+  letter-spacing: 0.05em;
+  transition: color 120ms ease;
+}
+.theme-switch button.active { color: var(--text); }
+.theme-switch button:hover { color: var(--accent-2); }
+.theme-switch .sep { color: var(--text-faint); }
 
 main {
   max-width: var(--measure);
-  margin: 0 auto 3rem;
-  padding: 2.5rem 2rem;
-  border: 2px solid var(--rule-bright);
+  margin: 0 auto;
+  padding: 4.5rem 1.5rem 6rem;
   background: var(--bg);
-  box-shadow:
-    0 0 0 1px var(--bg),
-    0 0 0 3px var(--rule);
+}
+[data-theme="rpg"] main {
+  padding: 2.5rem 2rem;
+  margin: 0 auto 3rem;
+  border: 2px solid var(--rule-bright);
+  box-shadow: 0 0 0 1px var(--bg), 0 0 0 3px var(--rule);
 }
 
 .site-footer {
   max-width: var(--measure);
   margin: 0 auto;
-  padding: 0 1.5rem 3rem;
+  padding: 3rem 1.5rem 3.5rem;
   font-size: var(--t-xs);
   color: var(--text-faint);
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  letter-spacing: 0.04em;
+  border-top: 1px solid var(--rule);
+  letter-spacing: 0.03em;
+  font-family: var(--font-mono);
 }
-.site-footer a {
-  text-decoration: none;
-  color: var(--text-faint);
-}
-.site-footer a:hover { color: var(--accent); }
+[data-theme="rpg"] .site-footer { border-top: 0; padding: 0 1.5rem 3rem; }
+.site-footer a { text-decoration: none; color: var(--text-faint); }
+.site-footer a:hover { color: var(--text-muted); }
+[data-theme="rpg"] .site-footer a:hover { color: var(--accent); }
 
-/* ---- Home intro ---- */
+/* ============================================================
+   Home intro / section labels
+   ============================================================ */
 .intro {
-  margin: 0 0 3rem;
+  margin: 0 0 3.5rem;
   color: var(--text-muted);
 }
 
@@ -201,13 +316,17 @@ main {
   font-size: var(--t-xs);
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--text-faint);
+  font-family: var(--font-mono);
   margin: 0 0 1rem;
   font-weight: 400;
 }
-.section-label::before { content: '> '; color: var(--accent-dim); }
+[data-theme="rpg"] .section-label { color: var(--accent); }
+.section-label::before { content: var(--dec-section); color: var(--accent-dim); }
 
-/* ---- Post list (RPG menu) ---- */
+/* ============================================================
+   Post list
+   ============================================================ */
 .archive { margin: 0; }
 
 .year-group { margin-top: 3rem; }
@@ -215,22 +334,20 @@ main {
 
 .year {
   font-size: var(--t-sm);
-  color: var(--accent-2);
+  color: var(--text-faint);
+  font-family: var(--font-mono);
   letter-spacing: 0.12em;
   margin: 0 0 0.75rem;
   font-weight: 400;
 }
-.year::before { content: '── '; color: var(--rule-bright); opacity: 0.4; }
-.year::after { content: ' ──'; color: var(--rule-bright); opacity: 0.4; }
+[data-theme="rpg"] .year { color: var(--accent-2); }
+.year::before { content: var(--dec-year-pre); color: var(--rule-bright); opacity: 0.5; }
+.year::after { content: var(--dec-year-suf); color: var(--rule-bright); opacity: 0.5; }
 
-.entries {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
+.entries { list-style: none; padding: 0; margin: 0; }
 .entries li {
-  padding: 0.6em 0 0.6em 1.5em;
-  border-bottom: 1px dashed var(--rule);
+  padding: 0.65em 0;
+  border-bottom: 1px solid var(--rule);
   display: grid;
   grid-template-columns: 3.5em 1fr;
   gap: 1.25em;
@@ -238,100 +355,108 @@ main {
   margin: 0;
   position: relative;
 }
+[data-theme="rpg"] .entries li {
+  padding-left: 1.5em;
+  border-bottom: 1px dashed var(--rule);
+}
 .entries li::before {
-  content: '▶';
+  content: var(--dec-cursor);
   position: absolute;
   left: 0;
   color: var(--accent);
   opacity: 0;
   transition: opacity 80ms steps(1);
 }
-.entries li:hover::before { opacity: 1; }
+[data-theme="rpg"] .entries li:hover::before { opacity: 1; }
 
 .entries time {
   color: var(--text-faint);
+  font-family: var(--font-mono);
   font-size: var(--t-xs);
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
 }
-.entries a {
-  text-decoration: none;
-  color: var(--text);
-}
-.entries li:hover a { color: var(--accent); }
+.entries a { text-decoration: none; color: var(--text); }
+.entries a:hover { text-decoration: underline; text-decoration-color: var(--text-faint); }
+[data-theme="rpg"] .entries a:hover { text-decoration: none; }
+[data-theme="rpg"] .entries li:hover a { color: var(--accent); }
 
-/* ---- Article ---- */
+/* ============================================================
+   Article
+   ============================================================ */
 .post-header {
-  margin-bottom: 2.5rem;
-  padding-bottom: 1.25rem;
-  border-bottom: 1px dashed var(--rule);
+  margin-bottom: 3rem;
+  padding-bottom: 1.75rem;
+  border-bottom: 1px solid var(--rule);
 }
-.post-header h1 {
-  font-size: var(--t-xl);
-  margin: 0 0 0.75rem;
-  line-height: 1.45;
-}
+[data-theme="rpg"] .post-header { border-bottom: 1px dashed var(--rule); }
+.post-header h1 { font-size: var(--t-xl); margin: 0 0 0.75rem; line-height: 1.45; }
 .post-header time {
   color: var(--text-faint);
+  font-family: var(--font-mono);
   font-size: var(--t-xs);
   letter-spacing: 0.05em;
 }
 
 .post-footer {
-  margin-top: 3.5rem;
-  padding-top: 1.25rem;
-  border-top: 1px dashed var(--rule);
+  margin-top: 4rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--rule);
   font-size: var(--t-sm);
 }
-.post-footer a {
-  text-decoration: none;
-  color: var(--text-muted);
-  letter-spacing: 0.03em;
-}
-.post-footer a:hover { color: var(--accent); }
+[data-theme="rpg"] .post-footer { border-top: 1px dashed var(--rule); }
+.post-footer a { text-decoration: none; color: var(--text-muted); letter-spacing: 0.03em; }
+.post-footer a:hover { color: var(--text); }
+[data-theme="rpg"] .post-footer a:hover { color: var(--accent); }
 
-/* ---- About ---- */
+/* ============================================================
+   About
+   ============================================================ */
 .about-section { margin-top: 2.5rem; }
 .about-section:first-of-type { margin-top: 0; }
-.about-section h2::before { content: '◆ '; color: var(--accent-dim); }
+.about-section h2::before { content: var(--dec-h2); color: var(--accent); }
 
-/* ---- 404 ---- */
-.notfound {
-  text-align: center;
-  padding: 2rem 0;
-}
+/* ============================================================
+   404
+   ============================================================ */
+.notfound { text-align: center; padding-top: 3rem; }
 .notfound .mark {
   font-size: 2.5rem;
-  color: var(--accent);
+  color: var(--text-faint);
   letter-spacing: 0.3em;
   line-height: 1;
   margin: 0 0 2rem;
 }
+[data-theme="rpg"] .notfound .mark { color: var(--accent); }
 .notfound p { color: var(--text-muted); }
 
-/* ---- Responsive ---- */
+/* ============================================================
+   Responsive
+   ============================================================ */
 @media (max-width: 32rem) {
   html { font-size: 16px; }
-  .site-header { padding: 2rem 1rem 1rem; }
-  main {
+  .site-header { padding: 2rem 1.25rem 0; gap: 1rem; }
+  [data-theme="rpg"] .site-header { padding: 2rem 1rem 1rem; }
+  .header-right { gap: 1.25rem; }
+  main { padding: 3rem 1.25rem 4rem; }
+  [data-theme="rpg"] main {
     padding: 2rem 1.25rem;
     margin: 0 0.5rem 2.5rem;
-    box-shadow:
-      0 0 0 1px var(--bg),
-      0 0 0 2px var(--rule);
+    box-shadow: 0 0 0 1px var(--bg), 0 0 0 2px var(--rule);
   }
-  .site-footer { padding: 0 1rem 2rem; }
-  .entries li {
-    grid-template-columns: 1fr;
-    gap: 0.15em;
-    padding: 0.85em 0 0.85em 1.5em;
-  }
+  .site-footer { padding: 2rem 1.25rem 2.5rem; }
+  [data-theme="rpg"] .site-footer { padding: 0 1rem 2rem; }
+  .entries li { grid-template-columns: 1fr; gap: 0.15em; padding: 0.85em 0; }
+  [data-theme="rpg"] .entries li { padding-left: 1.5em; padding-right: 0; }
 }
 
-/* ---- Print ---- */
+/* ============================================================
+   Print
+   ============================================================ */
 @media print {
   body { background: #fff; color: #000; font-size: 11pt; }
-  main { border: 1px solid #000; box-shadow: none; }
-  .site-header nav, .site-footer, .post-footer { display: none; }
+  main { border: 0; box-shadow: none; padding: 0; max-width: none; }
+  .site-header nav, .theme-switch, .site-footer, .post-footer { display: none; }
   a { text-decoration: none; color: #000; }
+  hr::before { color: #999; }
   .entries li::before, .section-label::before { display: none; }
 }
