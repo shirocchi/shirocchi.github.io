@@ -45,9 +45,16 @@
   --text: #d4ecff;
   --text-muted: #6e8db0;
   --text-faint: #3f5878;
-  --accent: #5dffac;
-  --accent-2: #4ad8e8;
+
+  /* role-based accent palette */
+  --accent: #5dffac;        /* green: interactive / selection / cursor */
+  --accent-2: #4ad8e8;      /* cyan: info / structural marks */
+  --accent-yellow: #ffd166; /* gold: emphasis / brand / heading */
+  --accent-pink: #ff9ec4;   /* pink: special / quote / inline code */
+  --accent-orange: #ff8855; /* orange: warning */
+  --accent-purple: #c39dff; /* purple: nav hover */
   --accent-dim: #2a8a6a;
+
   --rule: #2a4060;
   --rule-bright: #4ad8e8;
 
@@ -58,12 +65,12 @@
   --leading: 1.85;
   --t-base: 18px;
 
-  --dec-brand: '■ ';
+  --dec-brand: '★ ';
   --dec-h2: '◆ ';
   --dec-section: '> ';
   --dec-year-pre: '── ';
   --dec-year-suf: ' ──';
-  --dec-hr: '▼  ▽  ▼';
+  --dec-hr: '◆ ◇ ◆';
   --dec-cursor: '▶';
 }
 
@@ -136,10 +143,11 @@ h1, h2, h3 {
 
 h1 { font-size: var(--t-xl); margin: 0 0 1.25rem; }
 h2 { font-size: var(--t-lg); margin: 3rem 0 1rem; }
-[data-theme="rpg"] h2 { color: var(--accent-2); }
+[data-theme="rpg"] h2 { color: var(--accent-yellow); }
 h2::before { content: var(--dec-h2); color: var(--accent); }
+[data-theme="rpg"] h2::before { color: var(--accent); }
 h3 { font-size: 1.05rem; margin: 2.25rem 0 0.5rem; font-weight: 500; }
-[data-theme="rpg"] h3 { font-weight: 400; }
+[data-theme="rpg"] h3 { font-weight: 400; color: var(--accent-2); }
 
 p { margin: 0 0 1.5em; }
 
@@ -151,8 +159,9 @@ blockquote {
 }
 [data-theme="rpg"] blockquote {
   padding: 0.5em 1.25em;
-  border-left: 2px solid var(--accent);
+  border-left: 2px solid var(--accent-pink);
   background: var(--bg-elev);
+  color: var(--accent-pink);
 }
 
 img {
@@ -178,6 +187,12 @@ hr::before {
   font-size: 0.95em;
   letter-spacing: 0.4em;
 }
+[data-theme="rpg"] hr::before {
+  background: linear-gradient(90deg, var(--accent-yellow), var(--accent-2), var(--accent-yellow));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
 
 code {
   font-family: var(--font-mono);
@@ -187,7 +202,7 @@ code {
   border-radius: 2px;
 }
 [data-theme="rpg"] code {
-  color: var(--accent-2);
+  color: var(--accent-pink);
   border: 1px solid var(--rule);
   border-radius: 0;
   font-size: 0.9em;
@@ -237,6 +252,7 @@ li { margin: 0.3em 0; }
 }
 [data-theme="rpg"] .site-header .brand { font-weight: 400; }
 .site-header .brand::before { content: var(--dec-brand); color: var(--accent-2); }
+[data-theme="rpg"] .site-header .brand::before { color: var(--accent-yellow); }
 
 .header-right {
   display: flex;
@@ -250,7 +266,7 @@ li { margin: 0.3em 0; }
   letter-spacing: 0.05em;
 }
 .site-header nav a:hover { color: var(--text); text-decoration: none; }
-[data-theme="rpg"] .site-header nav a:hover { color: var(--accent); text-decoration: underline; }
+[data-theme="rpg"] .site-header nav a:hover { color: var(--accent-purple); text-decoration: underline; }
 
 .theme-switch {
   display: flex;
@@ -271,6 +287,8 @@ li { margin: 0.3em 0; }
 }
 .theme-switch button.active { color: var(--text); }
 .theme-switch button:hover { color: var(--accent-2); }
+[data-theme="rpg"] .theme-switch button:hover { color: var(--accent-yellow); }
+[data-theme="rpg"] .theme-switch button.active { color: var(--accent-yellow); }
 .theme-switch .sep { color: var(--text-faint); }
 
 main {
@@ -321,8 +339,9 @@ main {
   margin: 0 0 1rem;
   font-weight: 400;
 }
-[data-theme="rpg"] .section-label { color: var(--accent); }
+[data-theme="rpg"] .section-label { color: var(--accent-yellow); }
 .section-label::before { content: var(--dec-section); color: var(--accent-dim); }
+[data-theme="rpg"] .section-label::before { color: var(--accent); }
 
 /* ============================================================
    Post list
@@ -343,6 +362,8 @@ main {
 [data-theme="rpg"] .year { color: var(--accent-2); }
 .year::before { content: var(--dec-year-pre); color: var(--rule-bright); opacity: 0.5; }
 .year::after { content: var(--dec-year-suf); color: var(--rule-bright); opacity: 0.5; }
+[data-theme="rpg"] .year::before,
+[data-theme="rpg"] .year::after { color: var(--accent-yellow); opacity: 0.6; }
 
 .entries { list-style: none; padding: 0; margin: 0; }
 .entries li {
@@ -426,7 +447,7 @@ main {
   line-height: 1;
   margin: 0 0 2rem;
 }
-[data-theme="rpg"] .notfound .mark { color: var(--accent); }
+[data-theme="rpg"] .notfound .mark { color: var(--accent-orange); }
 .notfound p { color: var(--text-muted); }
 
 /* ============================================================
