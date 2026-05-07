@@ -1,16 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=DotGothic16&display=swap');
 
 :root {
-  /* PC-98 / RPG dialog palette */
-  --bg: #0e0d1f;
-  --bg-elev: #1a1830;
-  --text: #f5efd5;
-  --text-muted: #a39fbe;
-  --text-faint: #5e5a7e;
-  --accent: #ffd166;
-  --accent-dim: #c89a3a;
-  --rule: #3b3a5b;
-  --rule-bright: #f5efd5;
+  /* PC-98 / RPG dialog palette — deep navy with green & cyan */
+  --bg: #0a1228;
+  --bg-elev: #16243f;
+  --text: #d4ecff;
+  --text-muted: #6e8db0;
+  --text-faint: #3f5878;
+  --accent: #5dffac;       /* primary: RPG green */
+  --accent-2: #4ad8e8;     /* secondary: cyan */
+  --accent-dim: #2a8a6a;
+  --rule: #2a4060;
+  --rule-bright: #4ad8e8;
 
   --measure: 38rem;
   --leading: 1.85;
@@ -68,9 +69,9 @@ h1 { font-size: var(--t-xl); margin: 0 0 1.25rem; }
 h2 {
   font-size: var(--t-lg);
   margin: 3rem 0 1rem;
-  color: var(--accent);
+  color: var(--accent-2);
 }
-h2::before { content: '◆ '; color: var(--accent-dim); }
+h2::before { content: '◆ '; color: var(--accent); }
 h3 { font-size: 1.05rem; margin: 2.25rem 0 0.5rem; color: var(--text); }
 
 p { margin: 0 0 1.5em; }
@@ -108,7 +109,7 @@ code {
   font-family: 'DotGothic16', monospace;
   font-size: 0.9em;
   background: var(--bg-elev);
-  color: var(--accent);
+  color: var(--accent-2);
   padding: 0.1em 0.4em;
   border: 1px solid var(--rule);
 }
@@ -152,7 +153,7 @@ li { margin: 0.3em 0; }
 }
 .site-header .brand::before {
   content: '■ ';
-  color: var(--accent);
+  color: var(--accent-2);
 }
 .site-header nav { display: flex; gap: 1.5rem; }
 .site-header nav a {
@@ -214,13 +215,13 @@ main {
 
 .year {
   font-size: var(--t-sm);
-  color: var(--accent);
+  color: var(--accent-2);
   letter-spacing: 0.12em;
   margin: 0 0 0.75rem;
   font-weight: 400;
 }
-.year::before { content: '── '; color: var(--text-faint); }
-.year::after { content: ' ──'; color: var(--text-faint); }
+.year::before { content: '── '; color: var(--rule-bright); opacity: 0.4; }
+.year::after { content: ' ──'; color: var(--rule-bright); opacity: 0.4; }
 
 .entries {
   list-style: none;
