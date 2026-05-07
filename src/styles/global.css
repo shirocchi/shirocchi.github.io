@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=DotGothic16&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&display=swap');
 
 :root {
   /* Sumi ink on washi paper */
@@ -7,15 +7,15 @@
   --ink-faint: #b0a89c;
   --paper: #faf6ec;
   --paper-edge: #f3ecdb;
-  --rule: #d8cfba;
-  --measure: 38rem;
+  --rule: #e2dac7;
+  --measure: 36rem;
 
-  --leading: 1.9;
-  --t-base: 18px;
+  --leading: 1.95;
+  --t-base: 17px;
   --t-xs: 0.78rem;
   --t-sm: 0.86rem;
-  --t-lg: 1.18rem;
-  --t-xl: 1.4rem;
+  --t-lg: 1.2rem;
+  --t-xl: 1.45rem;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -28,35 +28,33 @@ html {
 
 body {
   margin: 0;
-  font-family: 'DotGothic16', 'MS Gothic', monospace;
+  font-family: 'Klee One', 'Hiragino Maru Gothic ProN', 'YuKyokasho', sans-serif;
   font-weight: 400;
   color: var(--ink);
   background: var(--paper);
   line-height: var(--leading);
-  /* keep pixels crisp — no antialiasing */
-  -webkit-font-smoothing: none;
+  -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-smooth: never;
-  text-rendering: geometricPrecision;
+  text-rendering: optimizeLegibility;
 }
 
 a {
   color: inherit;
   text-decoration: underline;
-  text-underline-offset: 0.25em;
-  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+  text-decoration-thickness: 0.5px;
   text-decoration-color: var(--ink-faint);
-  transition: text-decoration-color 100ms steps(1);
+  transition: text-decoration-color 120ms ease, text-decoration-thickness 120ms ease;
 }
 a:hover {
   text-decoration-color: var(--ink);
-  text-decoration-thickness: 2px;
+  text-decoration-thickness: 1px;
 }
 
 h1, h2, h3 {
-  font-weight: 400;
-  line-height: 1.5;
-  letter-spacing: 0;
+  font-weight: 600;
+  line-height: 1.55;
+  letter-spacing: 0.01em;
 }
 h1 { font-size: var(--t-xl); margin: 0 0 1.25rem; }
 h2 { font-size: var(--t-lg); margin: 3rem 0 1rem; }
@@ -86,14 +84,14 @@ hr {
   height: 1em;
 }
 hr::before {
-  content: '* * *';
+  content: '⁂';
   color: var(--ink-faint);
-  font-size: 0.95em;
-  letter-spacing: 0.3em;
+  font-size: 1em;
+  letter-spacing: 0.4em;
 }
 
 code {
-  font-family: 'DotGothic16', monospace;
+  font-family: 'Klee One', monospace;
   font-size: 0.85em;
   background: rgba(28, 24, 19, 0.05);
   padding: 0.1em 0.35em;
@@ -174,7 +172,7 @@ main {
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--ink-faint);
-  font-family: 'DotGothic16', monospace;
+  font-family: 'Klee One', monospace;
   margin: 0 0 1rem;
   font-weight: 400;
 }
@@ -188,7 +186,7 @@ main {
 .year {
   font-size: var(--t-sm);
   color: var(--ink-faint);
-  font-family: 'DotGothic16', monospace;
+  font-family: 'Klee One', monospace;
   letter-spacing: 0.12em;
   font-feature-settings: 'tnum';
   margin: 0 0 0.75rem;
@@ -211,7 +209,7 @@ main {
 }
 .entries time {
   color: var(--ink-faint);
-  font-family: 'DotGothic16', monospace;
+  font-family: 'Klee One', monospace;
   font-size: var(--t-xs);
   font-feature-settings: 'tnum';
   letter-spacing: 0.04em;
@@ -239,7 +237,7 @@ main {
 }
 .post-header time {
   color: var(--ink-faint);
-  font-family: 'DotGothic16', monospace;
+  font-family: 'Klee One', monospace;
   font-size: var(--t-xs);
   font-feature-settings: 'tnum';
   letter-spacing: 0.05em;
