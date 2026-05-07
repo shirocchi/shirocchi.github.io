@@ -4,20 +4,22 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 const posts = (await getCollection('posts', ({ data }) => !data.draft))
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
-  .slice(0, 5);
+  .slice(0, 6);
 
-const fmt = (d: Date) =>
-  `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')}`;
+const md = (d: Date) =>
+  `${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')}`;
 ---
-<BaseLayout description="ノートと文章。">
-  <p>
-    ここはノートと文章を置く場所です。
+<BaseLayout>
+  <p class="intro">
+    ノートと文章。<br />
+    数えない、煽らない、急がない。
   </p>
 
-  <ul class="posts">
+  <p class="section-label">recent</p>
+  <ul class="entries">
     {posts.map((p) => (
       <li>
-        <time datetime={p.data.date.toISOString()}>{fmt(p.data.date)}</time>
+        <time datetime={p.data.date.toISOString()}>{md(p.data.date)}</time>
         <a href={`/posts/${p.id}/`}>{p.data.title}</a>
       </li>
     ))}

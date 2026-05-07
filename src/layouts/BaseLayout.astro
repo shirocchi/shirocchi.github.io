@@ -9,20 +9,25 @@ interface Props {
 const { title, description } = Astro.props;
 const siteTitle = 'shirocchi';
 const fullTitle = title ? `${title} — ${siteTitle}` : siteTitle;
+const desc = description ?? 'ノートと文章。';
 ---
 <!doctype html>
 <html lang="ja">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#faf6ec" />
     <title>{fullTitle}</title>
-    {description && <meta name="description" content={description} />}
+    <meta name="description" content={desc} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={desc} />
+    <meta property="og:type" content={title ? 'article' : 'website'} />
     <link rel="alternate" type="application/rss+xml" title={siteTitle} href="/rss.xml" />
     <link rel="sitemap" href="/sitemap-index.xml" />
   </head>
   <body>
-    <header class="site">
-      <a class="title" href="/">{siteTitle}</a>
+    <header class="site-header">
+      <a class="brand" href="/">{siteTitle}</a>
       <nav>
         <a href="/posts/">posts</a>
         <a href="/about/">about</a>
@@ -31,8 +36,9 @@ const fullTitle = title ? `${title} — ${siteTitle}` : siteTitle;
     <main>
       <slot />
     </main>
-    <footer class="site">
-      © {new Date().getFullYear()} {siteTitle}
+    <footer class="site-footer">
+      <span>© {new Date().getFullYear()}</span>
+      <a href="/rss.xml">rss</a>
     </footer>
   </body>
 </html>
