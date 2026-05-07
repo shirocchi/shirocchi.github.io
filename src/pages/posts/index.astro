@@ -1,0 +1,20 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const posts = (await getCollection('posts', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const fmt = (d: Date) =>
+  `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')}`;
+---
+<BaseLayout title="posts">
+  <ul class="posts">
+    {posts.map((p) => (
+      <li>
+        <time datetime={p.data.date.toISOString()}>{fmt(p.data.date)}</time>
+        <a href={`/posts/${p.id}/`}>{p.data.title}</a>
+      </li>
+    ))}
+  </ul>
+</BaseLayout>
