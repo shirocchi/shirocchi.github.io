@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DotGothic16&display=swap');
 
 :root {
   /* Sumi ink on washi paper */
@@ -7,15 +7,15 @@
   --ink-faint: #b0a89c;
   --paper: #faf6ec;
   --paper-edge: #f3ecdb;
-  --rule: #e2dac7;
-  --measure: 36rem;
+  --rule: #d8cfba;
+  --measure: 38rem;
 
-  --leading: 1.95;
-  --t-base: 17px;
-  --t-xs: 0.75rem;
-  --t-sm: 0.8125rem;
+  --leading: 1.9;
+  --t-base: 18px;
+  --t-xs: 0.78rem;
+  --t-sm: 0.86rem;
   --t-lg: 1.18rem;
-  --t-xl: 1.42rem;
+  --t-xl: 1.4rem;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -28,37 +28,39 @@ html {
 
 body {
   margin: 0;
-  font-family: 'Noto Serif JP', 'Hiragino Mincho ProN', 'YuMincho', '游明朝', serif;
+  font-family: 'DotGothic16', 'MS Gothic', monospace;
   font-weight: 400;
-  font-feature-settings: 'palt' 1, 'pkna' 1;
   color: var(--ink);
   background: var(--paper);
   line-height: var(--leading);
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
+  /* keep pixels crisp — no antialiasing */
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: grayscale;
+  font-smooth: never;
+  text-rendering: geometricPrecision;
 }
 
 a {
   color: inherit;
   text-decoration: underline;
-  text-underline-offset: 0.22em;
-  text-decoration-thickness: 0.5px;
+  text-underline-offset: 0.25em;
+  text-decoration-thickness: 1px;
   text-decoration-color: var(--ink-faint);
-  transition: text-decoration-color 120ms ease, text-decoration-thickness 120ms ease;
+  transition: text-decoration-color 100ms steps(1);
 }
 a:hover {
   text-decoration-color: var(--ink);
-  text-decoration-thickness: 1px;
+  text-decoration-thickness: 2px;
 }
 
 h1, h2, h3 {
-  font-weight: 700;
-  line-height: 1.55;
-  letter-spacing: 0.015em;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0;
 }
 h1 { font-size: var(--t-xl); margin: 0 0 1.25rem; }
 h2 { font-size: var(--t-lg); margin: 3rem 0 1rem; }
-h3 { font-size: 1.05rem; margin: 2.25rem 0 0.5rem; font-weight: 500; }
+h3 { font-size: 1.05rem; margin: 2.25rem 0 0.5rem; }
 
 p { margin: 0 0 1.5em; }
 
@@ -84,14 +86,14 @@ hr {
   height: 1em;
 }
 hr::before {
-  content: '⁂';
+  content: '* * *';
   color: var(--ink-faint);
   font-size: 0.95em;
-  letter-spacing: 0.4em;
+  letter-spacing: 0.3em;
 }
 
 code {
-  font-family: 'JetBrains Mono', 'SF Mono', ui-monospace, Menlo, monospace;
+  font-family: 'DotGothic16', monospace;
   font-size: 0.85em;
   background: rgba(28, 24, 19, 0.05);
   padding: 0.1em 0.35em;
@@ -172,7 +174,7 @@ main {
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--ink-faint);
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: 'DotGothic16', monospace;
   margin: 0 0 1rem;
   font-weight: 400;
 }
@@ -186,7 +188,7 @@ main {
 .year {
   font-size: var(--t-sm);
   color: var(--ink-faint);
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: 'DotGothic16', monospace;
   letter-spacing: 0.12em;
   font-feature-settings: 'tnum';
   margin: 0 0 0.75rem;
@@ -209,7 +211,7 @@ main {
 }
 .entries time {
   color: var(--ink-faint);
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: 'DotGothic16', monospace;
   font-size: var(--t-xs);
   font-feature-settings: 'tnum';
   letter-spacing: 0.04em;
@@ -237,7 +239,7 @@ main {
 }
 .post-header time {
   color: var(--ink-faint);
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: 'DotGothic16', monospace;
   font-size: var(--t-xs);
   font-feature-settings: 'tnum';
   letter-spacing: 0.05em;
