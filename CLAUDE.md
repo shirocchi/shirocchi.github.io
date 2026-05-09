@@ -24,6 +24,7 @@ https://shirocchi.github.io/
 
 - **`src/content/posts/` は触らない** — vault 側で書いて sync で生成。直接編集しても次回の sync で上書きされる
 - vault 側の posts は `slug` がファイル名になる。slug 無しはスキップ
+- 画像は vault の `attachments/` に置き、Obsidian の `![[file.png]]` / `![[file.png|キャプション|400]]` 構文で参照。`sync.mjs` が `<img loading="lazy">` または `<figure>` + `<figcaption>` に展開し、参照されたファイルだけ `public/attachments/` にコピーする(mirror)
 
 ## コマンド
 

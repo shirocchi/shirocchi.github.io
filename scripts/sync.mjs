@@ -42,14 +42,55 @@ async function walk(dir) {
   return out;
 }
 
+function escapeHtml(s) {
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
 function transformBody(body) {
   const referencedAttachments = new Set();
 
-  // Embedded attachment: ![[file.png]] or ![[file.png|alt]]
-  body = body.replace(/!\[\[([^\]|]+?)(?:\|([^\]]+))?\]\]/g, (_m, file, alt) => {
+  // Embedded attachment: ![[file.png]] / ![[file.png|400]] / ![[file.png|alt]]
+  // / ![[file.png|alt|400]] / ![[file.png|400x300]]
+  body = body.replace(/!\[\[([^\]|]+?)((?:\|[^\]]*)*)\]\]/g, (_m, file, modifierStr) => {
     const name = path.basename(file.trim());
     referencedAttachments.add(name);
-    return `![${alt ?? ''}](/attachments/${encodeURI(name)})`;
+    const url = `/attachments/${encodeURI(name)}`;
+
+    const parts = modifierStr
+      ? modifierStr.split('|').slice(1).map((s) => s.trim()).filter(Boolean)
+      : [];
+
+    let alt = '';
+    let width;
+    let height;
+    for (const p of parts) {
+      const m = p.match(/^(\d+)(?:x(\d+))?$/);
+      if (m) {
+        width = m[1];
+        if (m[2]) height = m[2];
+      } else {
+        alt = p;
+      }
+    }
+
+    const attrs = [
+      `src="${url}"`,
+      `alt="${escapeHtml(alt)}"`,
+      width ? `width="${width}"` : '',
+      height ? `height="${height}"` : '',
+      'loading="lazy"',
+      'decoding="async"',
+    ].filter(Boolean).join(' ');
+
+    const img = `<img ${attrs}>`;
+    if (alt) {
+      return `<figure>${img}<figcaption>${escapeHtml(alt)}</figcaption></figure>`;
+    }
+    return img;
   });
 
   // Internal wikilink: [[note]] or [[note|label]]

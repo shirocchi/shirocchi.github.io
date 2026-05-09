@@ -173,6 +173,30 @@ img {
 [data-theme="rpg"] img {
   image-rendering: pixelated;
   image-rendering: crisp-edges;
+  border: 1px solid var(--rule);
+}
+
+figure {
+  margin: 2.5em auto;
+  text-align: center;
+}
+figure img { margin: 0 auto 0.6em; }
+figure figcaption {
+  font-size: var(--t-sm);
+  color: var(--text-muted);
+  line-height: 1.5;
+  text-align: center;
+  max-width: 30rem;
+  margin: 0 auto;
+}
+[data-theme="rpg"] figure figcaption {
+  color: var(--accent-2);
+  font-size: var(--t-xs);
+  letter-spacing: 0.04em;
+}
+[data-theme="rpg"] figure figcaption::before {
+  content: '▽ ';
+  color: var(--accent-pink);
 }
 
 hr {
