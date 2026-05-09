@@ -5,7 +5,8 @@
 // - Reads vault/posts/**/*.md
 // - Skips drafts (frontmatter draft: true, missing date, or missing slug)
 // - Writes to src/content/posts/<slug>.md (renamed by slug)
-// - Converts ![[image.png]] -> ![](/attachments/image.png)
+// - Resolves ![[image.png]] by basename across the entire vault (Obsidian-style),
+//   so images can live in attachments/, pictures/, or anywhere
 // - Converts [[note]] / [[note|alias]] -> alias-or-note text (no internal links yet)
 // - Mirrors: removes site files no longer present in vault
 // - Copies referenced attachments only
@@ -21,11 +22,18 @@ const VAULT_ROOT = process.env.VAULT_ROOT
   ?? 'C:/Users/sjion/iCloudDrive/iCloud~md~obsidian/Blog';
 
 const VAULT_POSTS = path.join(VAULT_ROOT, 'posts');
-const VAULT_ATTACH = path.join(VAULT_ROOT, 'attachments');
 const SITE_POSTS = path.join(SITE_ROOT, 'src', 'content', 'posts');
 const SITE_ATTACH = path.join(SITE_ROOT, 'public', 'attachments');
 
-async function walk(dir) {
+const IMAGE_EXTS = new Set([
+  '.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg', '.avif', '.bmp',
+]);
+
+const SKIP_DIRS = new Set([
+  'node_modules',
+]);
+
+async function walkMd(dir) {
   const out = [];
   let entries;
   try {
@@ -36,10 +44,40 @@ async function walk(dir) {
   }
   for (const e of entries) {
     const full = path.join(dir, e.name);
-    if (e.isDirectory()) out.push(...(await walk(full)));
+    if (e.isDirectory()) out.push(...(await walkMd(full)));
     else if (e.isFile() && e.name.endsWith('.md')) out.push(full);
   }
   return out;
+}
+
+// Walk the whole vault and build a basename->full path map for image files.
+// Skips hidden folders (.obsidian, .git, .claude, .claudian, ...) and SKIP_DIRS.
+async function indexVaultImages(root) {
+  const map = new Map();
+  async function walk(dir) {
+    let entries;
+    try {
+      entries = await fs.readdir(dir, { withFileTypes: true });
+    } catch (e) {
+      if (e.code === 'ENOENT') return;
+      throw e;
+    }
+    for (const e of entries) {
+      if (e.name.startsWith('.')) continue;
+      if (SKIP_DIRS.has(e.name)) continue;
+      const full = path.join(dir, e.name);
+      if (e.isDirectory()) {
+        await walk(full);
+      } else if (e.isFile()) {
+        const ext = path.extname(e.name).toLowerCase();
+        if (IMAGE_EXTS.has(ext)) {
+          if (!map.has(e.name)) map.set(e.name, full);
+        }
+      }
+    }
+  }
+  await walk(root);
+  return map;
 }
 
 function escapeHtml(s) {
@@ -110,7 +148,8 @@ async function main() {
   await ensureDir(SITE_POSTS);
   await ensureDir(SITE_ATTACH);
 
-  const vaultFiles = await walk(VAULT_POSTS);
+  const imageIndex = await indexVaultImages(VAULT_ROOT);
+  const vaultFiles = await walkMd(VAULT_POSTS);
   const written = new Set();
   const usedAttachments = new Set();
   let publishedCount = 0;
@@ -166,15 +205,19 @@ async function main() {
     }
   }
 
-  // Copy referenced attachments only
+  // Copy referenced attachments — resolve by basename across whole vault
   let copiedAttachments = 0;
   for (const name of usedAttachments) {
-    const src = path.join(VAULT_ATTACH, name);
+    const src = imageIndex.get(name);
+    if (!src) {
+      console.warn(`attachment not found in vault: ${name}`);
+      continue;
+    }
     try {
       await fs.copyFile(src, path.join(SITE_ATTACH, name));
       copiedAttachments++;
     } catch (e) {
-      console.warn(`attachment missing in vault: ${name}`);
+      console.warn(`failed to copy: ${name} (${e.message})`);
     }
   }
 
